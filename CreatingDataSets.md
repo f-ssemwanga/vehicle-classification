@@ -26,3 +26,7 @@
 #### Data Collection Phase
 
 * Start by keeping the parent class in the hierarchy of the class in the folder names ![Data Structure Convention](./images/datasetConvention.png)
+
+#### Adding images
+
+* Install a chrome extension called [*Download All Images*](https://chromewebstore.google.com/detail/download-all-images/ifipmflagepipjokmbdecpmjbibjnakm)
