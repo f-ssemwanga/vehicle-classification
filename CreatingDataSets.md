@@ -14,3 +14,12 @@
 
 * Encoding for the folders ![Cars Encoding](./images/class%20encoding.png)
 * Encoding for the files ![Encoding with file IDs](./images/Adding_id_for_images.png)
+
+#### Practical building of a data structure
+
+* Create a **dataset** folder
+* Create a **car** sub folder for vehicles with 4 wheels
+* Create a **motorcycle** sub folder for vehicles with 2 wheels
+
+**Add Sub classes to form the structure below** ![Dataset Structure](./images/datasetStructure.png)
+
