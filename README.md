@@ -29,3 +29,15 @@ If an object is misclassified at the parent level, all subsequent classification
 * From a design perspective this might be easy to build but might be very greedy in terms of memory - e.g. if we 100 classes the output would be a **softmax** function with 100 output values, which makes the classifier quite complex.
 * In real world problems you will need a super computer to handle this and number of images will be much larger.
 * In a hierarchical classifier each classifier would use a subset of images
+
+#### Summary
+
+* Decision will depend on the size of the dataset
+* Computational resources available
+* Problem complexity
+
+#### Increased problem complexity
+
+* Addition classes in the MotorBike category ![Motor Bike](./increased%20complexity2.png)
+* Additional classes in the Bicycle category ![Bicycle](./increased%20complexity1.png)
+
