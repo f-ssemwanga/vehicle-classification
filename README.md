@@ -5,3 +5,9 @@ Aim of the project is to build an AI project which classifies vehicles.  We need
 
 * first task it to classify motorcycles and cars.
 ![Vehicle Classification](./vehicleClassification.png)
+
+#### How to build the classifier?
+
+* Consider a hierarchical classifier
+* ![Hierarchical Classifier Tree](./vehicleClassification.png)
+* ![Resulting Hierarchical classifiers](./vehicleClassification.png)
