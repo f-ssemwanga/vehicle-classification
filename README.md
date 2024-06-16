@@ -8,9 +8,9 @@ Aim of the project is to build an AI project which classifies vehicles.  We need
 
 #### How to build the classifier?
 
-* Consider a hierarchical classifier Tree ![Hierarchical Classifier Tree](./three_classifiers.png)
+* Consider a hierarchical classifier Tree ![Hierarchical Classifier Tree](./images/three_classifiers.png)
 
-* Chosen Hierarchical Classes ![Resulting Hierarchical classifiers](./vehicleClassification.png)
+* Chosen Hierarchical Classes ![Resulting Hierarchical classifiers](./images/vehicleClassification.png)
 
 #### Limitations of Hierarchical classifiers
 
@@ -24,7 +24,7 @@ If an object is misclassified at the parent level, all subsequent classification
 
 #### Second approach is to develop a flat classifier
 
-* Flat file Classifier ![Flat File Classifier](./flatClassifier.png)
+* Flat file Classifier ![Flat File Classifier](./images/flatClassifier.png)
 * All vehicle types are considered as the same level, one classifier and no parent to child relationship.
 * From a design perspective this might be easy to build but might be very greedy in terms of memory - e.g. if we 100 classes the output would be a **softmax** function with 100 output values, which makes the classifier quite complex.
 * In real world problems you will need a super computer to handle this and number of images will be much larger.
@@ -38,6 +38,6 @@ If an object is misclassified at the parent level, all subsequent classification
 
 #### Increased problem complexity
 
-* Addition classes in the MotorBike category ![Motor Bike](./increased%20complexity2.png)
-* Additional classes in the Bicycle category ![Bicycle](./increased%20complexity1.png)
+* Addition classes in the MotorBike category ![Motor Bike](./images/increased%20complexity2.png)
+* Additional classes in the Bicycle category ![Bicycle](./images/increased%20complexity1.png)
 
