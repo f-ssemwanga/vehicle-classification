@@ -21,5 +21,8 @@
 * Create a **car** sub folder for vehicles with 4 wheels
 * Create a **motorcycle** sub folder for vehicles with 2 wheels
 
-**Add Sub classes to form the structure below** ![Dataset Structure](./images/datasetStructure.png)
+**Add Sub classes to form the structure below** ![Dataset Structure](./images/folderStructure.png)
 
+#### Data Collection Phase
+
+* Start by keeping the parent class in the hierarchy of the class in the folder names ![Data Structure Convention](./images/datasetConvention.png)
