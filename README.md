@@ -24,7 +24,7 @@ If an object is misclassified at the parent level, all subsequent classification
 
 #### Second approach is to develop a flat classifier
 
-* Flat file Classifier [Flat File Classifier](./flatClassifier.png)
+* Flat file Classifier ![Flat File Classifier](./flatClassifier.png)
 * All vehicle types are considered as the same level, one classifier and no parent to child relationship.
 * From a design perspective this might be easy to build but might be very greedy in terms of memory - e.g. if we 100 classes the output would be a **softmax** function with 100 output values, which makes the classifier quite complex.
 * In real world problems you will need a super computer to handle this and number of images will be much larger.
