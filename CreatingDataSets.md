@@ -30,3 +30,11 @@
 #### Adding images
 
 * Install a chrome extension called [*Download All Images*](https://chromewebstore.google.com/detail/download-all-images/ifipmflagepipjokmbdecpmjbibjnakm)
+* Use the Google Browser for example to search for images of a Bus
+
+#### Collecting images
+
+* Collect images with contextual noise
+* Images should now be too generalised e.g. images with only white backgrounds are not very good for training
+* Include images that are in the context / customised to the required model
+* Add images specific to the context of the problem
