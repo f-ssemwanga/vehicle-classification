@@ -38,3 +38,6 @@
 * Images should now be too generalised e.g. images with only white backgrounds are not very good for training
 * Include images that are in the context / customised to the required model
 * Add images specific to the context of the problem
+
+## Understanding the nature and distribution of the data
+
