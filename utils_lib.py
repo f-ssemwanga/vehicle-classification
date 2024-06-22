@@ -30,7 +30,7 @@ def load_rgb_data(
     - images (numpy.ndarray): Loaded and processed images.
     - labels (numpy.ndarray): Corresponding labels.
     """
-    print("Loading images...")
+    print("Loading images...", flash=True)
     data = []
     count = 0
 
@@ -52,7 +52,8 @@ def load_rgb_data(
                         if count % 50 == 0:
                             print(f"Loaded {count} images so far ...")
                         if max_number_of_images and count >= max_number_of_images:
-                            return _prepare_data(data, IMAGE_SIZE)
+                            print("Reached maximum number of images. Preparing data...")
+                            return _prepare_data(data, IMAGE_SIZE, IMAGE_DIRECTORY)
                     except Exception as e:
                         print(f"Cannot load {image_path}: {e}")
 
@@ -61,10 +62,11 @@ def load_rgb_data(
         random.shuffle(data)
         print("Dataset shuffled.")
 
-    return _prepare_data(data, IMAGE_SIZE)
+    print("Preparing data after full iteration...")
+    return _prepare_data(data, IMAGE_SIZE, IMAGE_DIRECTORY)
 
 
-def _prepare_data(data, IMAGE_SIZE):
+def _prepare_data(data, IMAGE_SIZE, IMAGE_DIRECTORY):
     """
     Prepare images and labels as numpy arrays.
 
@@ -76,8 +78,13 @@ def _prepare_data(data, IMAGE_SIZE):
     - images (numpy.ndarray): Processed images.
     - labels (numpy.ndarray): Corresponding labels.
     """
+    print("Convert images and labels into a numpy array")
     images = np.array([item[0] for item in data]).reshape(-1, IMAGE_SIZE, IMAGE_SIZE, 3)
     labels = np.array([item[1] for item in data])
+    print(f"Data Shape: {images.shape}")
+    print(f"Labels Shape: {labels.shape}")
+    print(f"Unique Labels: {np.unique(labels)}")
+    print(f"Loading dataset completed from path: {IMAGE_DIRECTORY}")
     return images, labels
 
 
