@@ -30,7 +30,7 @@ def load_rgb_data(
     - images (numpy.ndarray): Loaded and processed images.
     - labels (numpy.ndarray): Corresponding labels.
     """
-    print("Loading images...", flash=True)
+    print("Loading images...")
     data = []
     count = 0
 
@@ -175,57 +175,67 @@ def display_dataset_folders(path):
     print(classes)
 
 
-def get_data_distribution(IMAGE_DIRECTORY, output_file=None):
-    """
-    Get distribution of data and optionally save to CSV.
-
-    Args:
-    - IMAGE_DIRECTORY (str): Directory containing the images.
-    - output_file (str): File to save the distribution statistics.
-
-    Returns:
-    - stats (list): List of statistics for each image.
-    """
+def get_data_distribution(
+    IMAGE_DIRECTORY, directory_depth=2, output_file=None, plot_stats=True
+):
     print("Loading images...")
+    # list structure to collect the statistics
     stats = []
 
-    directories = next(os.walk(IMAGE_DIRECTORY))[1]
-    for directory_name in directories:
-        print(f"Loading {directory_name}")
-        images_file_names = next(
-            os.walk(os.path.join(IMAGE_DIRECTORY, directory_name))
-        )[2]
-        print(f"Loading {len(images_file_names)} files from {directory_name} class...")
-        for image_name in images_file_names:
-            image_path = os.path.join(IMAGE_DIRECTORY, directory_name, image_name)
-            try:
-                img = Image.open(image_path).convert("RGB")
-                width, height = img.size
-                size_kb = os.stat(image_path).st_size / 1000
-                stats.append(
-                    [
-                        directory_name,
-                        os.path.basename(image_name),
-                        width,
-                        height,
-                        size_kb,
-                    ]
-                )
-            except Exception as e:
-                print(f"Cannot load {image_path}: {e}")
+    for folder, directory_name, file_name in os.walk(IMAGE_DIRECTORY):
+        if len(file_name) != 0:
+            if directory_depth != 0:
+                # print (folder, directory_name, file_name)
+                folders_list = folder.split("/")[0:-1]
+            else:
+                folders_list = folder.split("/")[-1:]
 
-    if output_file:
-        stats_df = pd.DataFrame(
+            # print(folders_list)
+            label = folders_list[-directory_depth]
+            # print (label)
+            for i in range(len(file_name)):
+                image_name = file_name[i]
+                image_path = os.path.join(folder, image_name)
+                if ".DS_Store" not in image_path:
+                    # print(image_path)
+                    try:
+                        img = Image.open(image_path)
+                        # print(image_path)
+                        rgbimg = Image.new("RGB", img.size)
+                        rgbimg.paste(img)
+                        img = rgbimg
+
+                        width, height = img.size
+                        # get the size of the image in KB
+                        size_kb = os.stat(image_path).st_size / 1000
+                        # add the size to a list of sizes to be
+                        stats.append(
+                            [
+                                label,
+                                os.path.basename(image_path),
+                                width,
+                                height,
+                                size_kb,
+                            ]
+                        )
+                        # print(stats)
+                    except Exception:
+                        pass
+
+    if output_file is not None:
+        # convert the list into a dataframe to make it easy to save into a CSV
+        stats_dataframe = pd.DataFrame(
             stats, columns=["Class", "Filename", "Width", "Height", "Size_in_KB"]
         )
-        stats_df.to_csv(output_file, index=False)
-        print(f"Stats collected and saved in {output_file}")
+        stats_dataframe.to_csv(output_file, index=False)
+        print("Stats collected and saved in .", output_file)
     else:
         print("Stats collected")
 
     return stats
 
 
+"""
 def plot_dataset_distribution(
     stats,
     num_cols=5,
@@ -235,18 +245,9 @@ def plot_dataset_distribution(
     histogram_range=[0, 1000],
     figure_padding=4,
 ):
-    """
-    Plot distribution of dataset based on image sizes.
+    import matplotlib.pyplot as plt
+    import math
 
-    Args:
-    - stats (list): List of statistics for each image.
-    - num_cols (int): Number of columns in the grid.
-    - width (int): Width of the figure.
-    - height (int): Height of the figure.
-    - histogram_bins (int): Number of bins in the histogram.
-    - histogram_range (list): Range of the histogram.
-    - figure_padding (int): Padding between subplots.
-    """
     stats_df = pd.DataFrame(
         stats, columns=["Class", "Filename", "Width", "Height", "Size_in_KB"]
     )
@@ -292,6 +293,110 @@ def plot_dataset_distribution(
             index,
             class_count_dict[class_name] + 1,
             str(class_count_dict[class_name]),
+            ha="center",
+        )
+    plt.show()"""
+
+
+def plot_dataset_distribution(
+    stats,
+    num_cols=5,
+    width=10,
+    height=5,
+    histogram_bins=10,
+    histogram_range=[0, 1000],
+    figure_padding=4,
+):
+    # Convert the list into a dataframe
+    stats_frame = pd.DataFrame(
+        stats, columns=["Class", "Filename", "Width", "Height", "Size_in_KB"]
+    )
+
+    # Extract the dataframe related to sizes only
+    list_sizes = stats_frame["Size_in_KB"]
+
+    # Get the number of classes in the dataset
+    number_of_classes = stats_frame["Class"].nunique()
+    print(number_of_classes, " classes found in the dataset")
+
+    # Create a list of (list of sizes) for each class of images
+    # Start with the sizes of all images in the dataset
+    list_sizes_per_class = [list_sizes]
+    class_names = ["whole dataset"]
+    print("Images of the whole dataset have an average size of ", list_sizes.mean())
+
+    for c in stats_frame["Class"].unique():
+        print(
+            "sizes of class [",
+            c,
+            "] have an average size of ",
+            list_sizes.loc[stats_frame["Class"] == c].mean(),
+        )
+        # Append the sizes of images of a particular class
+        list_sizes_per_class.append(list_sizes.loc[stats_frame["Class"] == c])
+        class_names.append(c)
+
+    class_count_dict = {}
+    for c in stats_frame["Class"].unique():
+        print(
+            "number of instances in class [",
+            c,
+            "] is ",
+            stats_frame.loc[stats_frame["Class"] == c].count()["Class"],
+        )
+        class_count_dict[c] = stats_frame.loc[stats_frame["Class"] == c].count()[
+            "Class"
+        ]
+
+    num_rows = math.ceil((number_of_classes + 1) / num_cols)
+    if number_of_classes < num_cols:
+        num_cols = number_of_classes + 1
+
+    fig, axes = plt.subplots(num_rows, num_cols, figsize=(width, height))
+    fig.tight_layout(pad=figure_padding)
+
+    class_count = 0
+    if num_rows == 1 or num_cols == 1:
+        for i in range(num_rows):
+            for j in range(num_cols):
+                axes[j + i].hist(
+                    list_sizes_per_class[num_cols * i + j],
+                    bins=histogram_bins,
+                    range=histogram_range,
+                )
+                axes[j + i].set_xlabel("Image size (in KB)", fontweight="bold")
+                axes[i + j].set_title(
+                    class_names[j + i] + " images ", fontweight="bold"
+                )
+                class_count += 1
+                if class_count == number_of_classes + 1:
+                    break
+
+    else:
+        for i in range(num_rows):
+            for j in range(num_cols):
+                axes[i, j].hist(
+                    list_sizes_per_class[num_cols * i + j],
+                    bins=histogram_bins,
+                    range=histogram_range,
+                )
+                axes[i, j].set_xlabel("Image size (in KB)", fontweight="bold")
+                axes[i, j].set_title(
+                    class_names[num_cols * i + j] + " images ", fontweight="bold"
+                )
+                class_count += 1
+                if class_count == number_of_classes + 1:
+                    break
+
+    plt.figure()  # Create a new figure for the bar chart
+    print(class_count_dict)
+    plt.bar(*zip(*class_count_dict.items()))
+
+    for index, car_brand in enumerate(class_count_dict):
+        plt.text(
+            index,
+            class_count_dict[car_brand] + 1,
+            str(class_count_dict[car_brand]),
             ha="center",
         )
     plt.show()
