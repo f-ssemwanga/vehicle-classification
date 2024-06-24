@@ -4,7 +4,7 @@
 The aim of the project is to build an AI project which classifies vehicles.  We need to build a commercial-level surveillance system that counts the number of cars and motorcycles
 
 * The first task is to classify motorcycles and cars.
-![Vehicle Classification](./vehicleClassification.png)
+![Vehicle Classification](./images/vehicleClassification.png)
 
 #### How to build the classifier?
 
